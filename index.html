@@ -167,6 +167,7 @@ footer a{color:var(--muted)}
   <button class="chip on" data-f="all">All</button>
   <button class="chip" data-f="2025">2025</button>
   <button class="chip" data-f="2026">2026</button>
+  <button class="chip" data-f="recent">Last 6 months</button>
   <span class="sep"></span>
   <button class="chip accent" data-c="all">All clusters</button>
   <button class="chip accent" data-c="la">Los Angeles</button>
@@ -746,6 +747,20 @@ INCIDENTS.push(
       ['news','Breaking AC — Group protesting ACPD for allegedly aiding ICE','https://breakingac.com/atlantic-city/immigration-group-protesting-acpd-for-allegedly-aiding-ice/']]}
 );
 
+/* ===== last-6-months additions ===== */
+INCIDENTS.push(
+{d:'Apr 11, 2026',k:'2026-04-11',y:2026,city:'Minneapolis',st:'MN',venue:'Whipple Federal Building',cluster:'minneapolis',
+ trigger:'Raucous anti-ICE demo outside Whipple',force:['shoving / mob assault (protester-side)'],arrests:'4+',injuries:'TPUSA reporter twice shoved to ground',days:'1',
+ summary:'A Turning Point USA reporter was “mobbed and assaulted,” twice shoved to the ground; at least four arrested. On Apr 29, federal charges (interference with federally protected activity + assault) were filed against three family members — a protester-side force incident, included to mark the boundary of the dataset.',
+ src:[['news','Star Tribune — Couple and daughter charged with assaulting reporter','https://www.startribune.com/couple-and-daughter-charged-with-assaulting-turning-point-reporter-outside-whipple-building/601808323'],
+      ['video','▶ Footage search','SEARCH:Whipple building protest April 11 2026 Minneapolis clash']]},
+{d:'Jul 18, 2026',k:'2026-07-18',y:2026,city:'Baltimore',st:'MD',venue:'Patterson Park — “Get ICE out of Maryland”',cluster:'maryland',
+ trigger:'Statewide anti-ICE rally',force:['NONE — peaceful'],arrests:'0',injuries:'0',days:'1',
+ summary:'Maryland pattern holds: a “Get ICE out of Maryland” protest at Patterson Park with no clash, no arrests, no police weapons — weeks before the Frederick incident.',
+ src:[['video','CBS Baltimore/WJZ — Protest to get ICE out of Maryland (video)','https://www.cbsnews.com/baltimore/video/protest-to-get-ice-out-of-maryland-held-at-patterson-park/'],
+      ['video','▶ Footage search','SEARCH:Patterson Park Baltimore ICE out of Maryland protest July 2026']]}
+);
+
 /* ============ RENDER ============ */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const state = {year:'all', cluster:'all', q:''};
@@ -767,7 +782,7 @@ function forceTags(f){
 function render(){
   const rowsEl = document.getElementById('rows');
   const list = INCIDENTS.filter(i=>
-    (state.year==='all' || String(i.y)===state.year) &&
+    (state.year==='all' || String(i.y)===state.year || (state.year==='recent' && i.k>='2026-03-19')) &&
     (state.cluster==='all' || i.cluster===state.cluster) &&
     (!state.q || JSON.stringify(i).toLowerCase().includes(state.q))
   );
